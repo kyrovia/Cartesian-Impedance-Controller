@@ -1,0 +1,46 @@
+# 实验 3：期望位置设进墙内。看阻抗接触，并和纯位置控制对比。
+# 末端力/力矩曲线会保存；MuJoCo 窗口仍打开。
+
+sim:
+  model: models/scene_experiment3.xml
+  timestep: 0.001
+  duration: 8.0
+  viewer: true
+  realtime: 1.0
+
+robot:
+  site: attachment_site
+  home_q: [0.0, 0.0, 0.0, -1.57079, 0.0, 1.57079, -0.7853]
+
+control:
+  mode: impedance          # impedance | position
+  compare: true            # true 时再跑另一种控制并叠曲线
+
+impedance:
+  stiffness_trans: [400.0, 400.0, 400.0]
+  stiffness_rot: [25.0, 25.0, 25.0]
+  damping_zeta: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+  damping_trans: null
+  damping_rot: null
+
+# 纯位置：同一套笛卡尔 PD，但刚度高得多，更想跟进墙里的目标
+position:
+  stiffness_trans: [4000.0, 4000.0, 4000.0]
+  stiffness_rot: [200.0, 200.0, 200.0]
+  damping_zeta: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+  damping_trans: null
+  damping_rot: null
+
+filtering:
+  pose: 0.8
+
+experiment:
+  step_time: 1.0
+  penetrate: 0.08
+
+wall:
+  gap: 0.04
+  size: [0.03, 0.45, 0.45]
+
+log:
+  plot_wrench: logs/experiment3_wrench.png

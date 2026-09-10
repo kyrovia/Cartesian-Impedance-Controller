@@ -1,0 +1,34 @@
+# 实验 4：锁死笛卡尔期望，阶跃零空间构型。无墙。
+# 通过标准：关节（尤其肘部）会动，末端位姿应几乎不动。
+
+sim:
+  model: models/scene_experiment2.xml
+  timestep: 0.001
+  duration: 8.0
+  viewer: true
+  realtime: 1.0
+
+robot:
+  site: attachment_site
+  # libfranka 常用 ready：肘部弯折，远离伸直奇异
+  home_q: [0.0, -0.785398, 0.0, -2.356194, 0.0, 1.570796, 0.785398]
+
+impedance:
+  stiffness_trans: [400.0, 400.0, 400.0]
+  stiffness_rot: [25.0, 25.0, 25.0]
+  damping_zeta: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+  damping_trans: null
+  damping_rot: null
+
+nullspace:
+  stiffness: 1.0
+  damping_zeta: 1.0
+
+experiment:
+  step_time: 1.0
+  # 相对 home 的零空间目标偏移 [rad]，会被投影，不能全部实现
+  q_offset: [1.2, 0.5, -1.0, 0.0, 0.6, 0.0, 0.0]
+
+log:
+  plot_ee: logs/experiment4_ee.png
+  plot_q: logs/experiment4_q.png

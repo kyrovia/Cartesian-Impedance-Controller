@@ -1,0 +1,41 @@
+# 临时：更慢靠近墙，降低撞击速度/加速度，看冲击尖峰是否减小。
+# 相对 experiment5.yaml：4 秒直线靠近、平移阻尼加大、前馈 2 秒爬升。
+
+sim:
+  model: models/scene_experiment5.xml
+  timestep: 0.001
+  duration: 10.0
+  viewer: true
+  realtime: 1.0
+
+robot:
+  site: attachment_site
+  home_q: [0.0, 0.0, 0.0, -1.57079, 0.0, 1.57079, -0.7853]
+
+impedance:
+  stiffness_trans: [400.0, 400.0, 0.01]
+  stiffness_rot: [25.0, 25.0, 25.0]
+  damping_zeta: [3.0, 3.0, 3.0, 1.0, 1.0, 1.0]
+  damping_trans: null
+  damping_rot: null
+
+filtering:
+  pose: 1.0
+
+experiment:
+  step_time: 1.0
+  penetrate: 0.08
+  approach_duration: 4.0
+
+feedforward:
+  force: [0.0, 0.0, 10.0]
+  torque: [0.0, 0.0, 0.0]
+  start_time: 1.0
+  ramp_time: 2.0
+
+wall:
+  gap: 0.04
+  size: [0.03, 0.45, 0.55]
+
+log:
+  plot_contact: logs/experiment5_contact_slow.png

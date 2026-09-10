@@ -1,0 +1,37 @@
+# 实验 2：期望位姿大阶跃，比较有无参考滤波。
+# filtering.pose = 1.0 关闭滤波；越小越平滑。compare 为 true 时额外跑一遍无滤波对照。
+
+sim:
+  model: models/scene_experiment2.xml   # 无墙，只有地面和参考球
+  timestep: 0.001
+  duration: 8.0
+  viewer: true
+  realtime: 1.0
+
+robot:
+  site: attachment_site
+  home_q: [0.0, 0.0, 0.0, -1.57079, 0.0, 1.57079, -0.7853]
+
+impedance:
+  stiffness_trans: [400.0, 400.0, 400.0]
+  stiffness_rot: [25.0, 25.0, 25.0]
+  damping_zeta: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+  damping_trans: null
+  damping_rot: null
+
+filtering:
+  pose: 0.6          # 与仓库相同：1.0=无滤波；1kHz 下 0.1 会极慢，对比用 0.5~0.8
+  compare: true    # 同时保存无滤波曲线以便对比
+
+experiment:
+  step_time: 1.0
+  # 相对当前末端的大阶跃（米 / 弧度），不要改成厘米级
+  position_offset: [-0.12, 0.30, -0.20]
+  orientation_rpy: [0.70, -0.55, 0.65]
+
+log:
+  csv: logs/experiment2.csv
+  plot: logs/experiment2.png
+  plot_position: logs/experiment2_position.png
+  plot_torque: logs/experiment2_torque.png
+  plot_acceleration: logs/experiment2_acc.png

@@ -1,0 +1,38 @@
+# 实验 1：固定参考位姿 + 一次冲量扰动
+# 通过标准：被推开后靠阻抗回到参考点（不是持续力下的 F/K）。
+
+sim:
+  model: models/scene_experiment1.xml
+  timestep: 0.001
+  duration: 8.0
+  viewer: true          # 打开 MuJoCo 窗口；无显示器时改 false 或加 --headless
+  realtime: 1.0         # 1=按物理时间播放；加大则加速（如 2）
+
+robot:
+  site: attachment_site
+  home_q: [0.0, 0.0, 0.0, -1.57079, 0.0, 1.57079, -0.7853]
+
+impedance:
+  # 对角刚度 [N/m] 与 [N·m/rad]
+  stiffness_trans: [400.0, 400.0, 400.0]
+  stiffness_rot: [20.0, 20.0, 20.0]
+  # 相对阻尼比；D = 2 * zeta * sqrt(K)
+  damping_zeta: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+  # 若填写 damping_trans / damping_rot，则覆盖 zeta 公式
+  damping_trans: null
+  damping_rot: null
+
+experiment:
+  impulse: [10.0, 0.0, 0.0]          # 力冲量 [N·s]，改变位置
+  angular_impulse: [0.0, 2.0, 0.0]   # 力矩冲量 [N·m·s]，改变姿态（世界系）
+  impulse_time: 1.0
+
+# 固定刚墙（无关节，不可移动）。内侧面在手臂/末端最前方再空 gap。
+wall:
+  gap: 0.03
+  size: [0.03, 0.45, 0.45]   # 半尺寸：厚度 / 半宽 / 半高 [m]
+
+log:
+  csv: logs/experiment1.csv
+  plot: logs/experiment1.png
+  plot_torque: logs/experiment1_torque.png

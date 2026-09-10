@@ -1,0 +1,40 @@
+# 实验 5：保留墙。Z 向刚度近乎 0，Z 向前馈 10 N，看墙上接触力。
+# 期望仍伸进墙内（x），否则可能碰不到墙。+z 为世界向上。
+
+sim:
+  model: models/scene_experiment5.xml
+  timestep: 0.001
+  duration: 8.0
+  viewer: true
+  realtime: 1.0
+
+robot:
+  site: attachment_site
+  home_q: [0.0, 0.0, 0.0, -1.57079, 0.0, 1.57079, -0.7853]
+
+impedance:
+  stiffness_trans: [400.0, 400.0, 0.01]
+  stiffness_rot: [25.0, 25.0, 25.0]
+  damping_zeta: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+  damping_trans: null
+  damping_rot: null
+
+filtering:
+  pose: 0.8
+
+experiment:
+  step_time: 1.0
+  penetrate: 0.08
+  approach_duration: 0.0    # 0=一次阶跃（再经 pose 滤波）
+
+feedforward:
+  force: [0.0, 0.0, 10.0]   # 世界系 [N]，1 秒后加上
+  torque: [0.0, 0.0, 0.0]
+  start_time: 1.0
+
+wall:
+  gap: 0.04
+  size: [0.03, 0.45, 0.55]
+
+log:
+  plot_contact: logs/experiment5_contact.png
